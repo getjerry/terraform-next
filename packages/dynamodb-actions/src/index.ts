@@ -1,6 +1,7 @@
 // Alias
 export { createAlias } from './alias/create-alias';
 export { getAliasById } from './alias/get-alias-by-id';
+export { getAliasesById } from './alias/get-aliases-by-id';
 export { deleteAliasById } from './alias/delete-alias-by-id';
 export { getAliasByHostname } from './alias/get-alias-by-hostname';
 export { listAliasesForDeployment } from './alias/list-aliases-for-deployment';

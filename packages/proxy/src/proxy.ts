@@ -127,7 +127,8 @@ export class Proxy {
     routes: Route[],
     lambdaRoutes: Record<string, string>,
     fileSystemEndpointUrl: string,
-    reqUrl: string
+    reqUrl: string,
+    basePath: string,
   ) {
     const parsedUrl = parseUrl(reqUrl);
     let { searchParams, pathname: reqPathname = '/' } = parsedUrl;
@@ -179,7 +180,8 @@ export class Proxy {
           const filePath = await this.checkFileSystem(
             deploymentId,
             fileSystemEndpointUrl,
-            reqPathname
+            // strip basepath for filesystem requests
+            reqPathname.replace(new RegExp(`^${basePath}`), '')
           );
 
           // Check if the route matches a route from the filesystem

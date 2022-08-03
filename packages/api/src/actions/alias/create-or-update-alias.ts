@@ -165,6 +165,7 @@ async function createOrUpdateAlias(
     lambdaRoutes: targetDeployment.LambdaRoutes,
     prerenders: targetDeployment.Prerenders,
     routes: targetDeployment.Routes,
+    basePath: aliasToCreateBasePath,
   });
 
   res.status(201);
