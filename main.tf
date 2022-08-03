@@ -452,10 +452,10 @@ locals {
     })
   }
 
-  cloudfront_origins = {
+  cloudfront_origins = merge({
     for key, origin in local._cloudfront_origins : key => origin
     if origin.create
-  }
+  }, { for origin in var.cloudfront_origins : origin.origin_id => origin })
 
   # CloudFront behaviors
   ######################
@@ -494,10 +494,10 @@ locals {
     })
   }
 
-  cloudfront_ordered_cache_behaviors = {
+  cloudfront_ordered_cache_behaviors = merge({
     for key, behavior in local._cloudfront_ordered_cache_behaviors : key => behavior
     if behavior.create
-  }
+  }, { for behavior in var.cloudfront_ordered_cache_behaviors : behavior.target_origin_id => behavior })
 
   cloudfront_custom_error_response = {
     s3_failover = {
