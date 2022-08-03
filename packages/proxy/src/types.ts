@@ -7,6 +7,7 @@ export type HTTPHeaders = Record<string, string>;
 export interface ProxyConfig {
   etag: string;
   deploymentId: string;
+  basePath: string;
   routes: Route[];
   lambdaRoutes: Record<string, string>;
   prerenders: Record<string, { lambda: string }>;

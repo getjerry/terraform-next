@@ -20,6 +20,7 @@ import { ProxyConfig, RouteResult } from './types';
 import { renderError } from './error/render-error';
 import { MissingConfigError } from './error/missing-config';
 import { getEnv } from './util/get-env';
+import { getBasePath } from './util/get-base-path';
 
 /**
  * We use a custom fetch implementation here that caches DNS resolutions
@@ -103,13 +104,20 @@ async function handler(
   try {
     const { request } = event.Records[0].cf;
     const configEndpoint = getEnv(request, 'x-env-config-endpoint');
-    const alias = request.headers.host[0].value;
+    const host = request.headers.host[0].value;
     // TODO: Remove
     const apiEndpoint = '';
 
-    if (!alias) {
+    if (!host) {
       throw new Error('Alias could not be determined from request');
     }
+
+    // at this point proxy has no knowledge about proper basePath values
+    // getBasePath gets outermost folder path as "maybe base path" for proxy-config
+    // if it's valid, proxy-config responds with alias for host#basePath combination
+    // if not, fall back to root path alias
+    // limitation is only single-level basePath is allowed, which will do for jerry use case
+    const alias = `${host}${getBasePath(request.uri)}`
 
     const proxyConfig = await fetchProxyConfig(
       fetch,
@@ -145,7 +153,8 @@ async function handler(
       proxyConfig.routes,
       proxyConfig.lambdaRoutes,
       configEndpoint,
-      requestPath
+      requestPath,
+      proxyConfig.basePath,
     );
 
     // Check for redirect

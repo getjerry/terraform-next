@@ -81,6 +81,8 @@ data "aws_cloudfront_origin_request_policy" "managed_cors_custom_origin" {
 
 # Managed cache policy
 data "aws_cloudfront_cache_policy" "managed_caching_optimized_for_uncompressed_objects" {
+  // Disable config caching for debugging
+  // name = "Managed-CachingDisabled"
   name = "Managed-CachingOptimizedForUncompressedObjects"
 }
 
