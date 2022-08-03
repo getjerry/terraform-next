@@ -140,6 +140,16 @@ variable "cloudfront_webacl_id" {
   default     = null
 }
 
+variable "cloudfront_origins" {
+  type    = any
+  default = null
+}
+
+variable "cloudfront_ordered_cache_behaviors" {
+  type    = any
+  default = null
+}
+
 ##########
 # Labeling
 ##########
